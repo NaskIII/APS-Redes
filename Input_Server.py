@@ -18,7 +18,7 @@ def start():
     }
 
     def call():
-        ServerFTP.ServerFTP(client, '/home/nask/Documentos/Arquivos/').caller()
+        ServerFTP.ServerFTP(client, '/home/nask/Documentos/Transfer/').caller()
 
     call()
 
