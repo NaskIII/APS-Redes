@@ -1,7 +1,6 @@
 import sys
 sys.path.append('/home/nask/Documentos/Repositórios/APS-Redes/')
 from Server import ServerFTP
-from Client import ClientFTP
 
 
 def start():
@@ -10,7 +9,7 @@ def start():
         return user
     
     def createPassword():
-        password = int(input('Digite sua senha: '))
+        password = input('Digite sua senha: ')
         return password
     
     client = {
@@ -20,7 +19,7 @@ def start():
 
     def call():
         ServerFTP.ServerFTP(client, '/home/nask/Documentos/Arquivos/').caller()
-    
+
     call()
 
 start()
