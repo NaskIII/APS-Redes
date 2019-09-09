@@ -10,7 +10,7 @@ class ClientFTP(object):
 
      def connect(self):
         ftp = FTP('')
-        ftp.connect('localhost', 1026)
+        ftp.connect('127.0.0.1', 1026)
         try:
          ftp.login(user=self.user, passwd=self.password, acct='')
          dir = os.path.expanduser('~\\OneDrive\\Documentos\\')
