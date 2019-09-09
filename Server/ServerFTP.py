@@ -11,7 +11,7 @@ class ServerFTP(object):
 
     def login(self):
         login = DummyAuthorizer()
-        login.add_user(self.user, self.password, self.diretorio,perm='elr', msg_login='Login Succefull', msg_quit='Goodbye')
+        login.add_user(self.user, self.password, self.diretorio,perm='elradfmw', msg_login='Login Succefull', msg_quit='Goodbye')
         return login
     
     def handler(self, login):
