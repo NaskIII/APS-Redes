@@ -22,7 +22,7 @@ def start():
     }
 
     def call():
-        ClientFTP.ClientFTP(client).call()
+        ClientFTP.ClientFTP(client).escolha()
 
     call()
 
