@@ -12,7 +12,8 @@ class ClientFTP(object):
 
     def connect(self):
         ftp = FTP('')
-        ftp.connect('127.0.0.1', 1026)
+        ftp.connect('192.168.0.15', 8080)
+
         try:
             ftp.login(user=self.user, passwd=self.password, acct='')
             #dir = os.path.expanduser('~\\OneDrive\\Documentos\\')
@@ -33,7 +34,7 @@ class ClientFTP(object):
 
     def upload(self, ftp):
         caminho = input('Digite o caminho absoluto do arquivo: ')
-        arq = input('Digite o nome do arquivo: ')
+        arq = caminho.split('/')[-1]
         try:
          shutil.copy(caminho, '/home/nask/Documentos/Repositórios/APS-Redes/')
          arquivo = open(arq, 'rb')
@@ -50,7 +51,7 @@ class ClientFTP(object):
         ftp = self.connect()
 
         escolha = ''
-        while escolha != 'exit':
+        while escolha != '!EXIT':
             escolha = input('\n1 - Download \n2 - Upload \n3 - Listar\n \n>>> ')
             self.call(escolha, ftp)
 
@@ -61,5 +62,3 @@ class ClientFTP(object):
             self.upload(ftp)
        elif escolha == '3':
             self.listar(ftp)
-       elif escolha == 'exit':
-            ftp.close()
