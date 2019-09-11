@@ -20,7 +20,7 @@ class ServerFTP(object):
         return handler
     
     def server(self, handler):
-        server = FTPServer(('127.0.0.1', 1026), handler)
+        server = FTPServer(('192.168.0.15', 8080), handler)
         server.serve_forever()
 
     def caller(self):
