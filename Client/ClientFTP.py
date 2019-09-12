@@ -17,6 +17,7 @@ class ClientFTP(object):
             ftp.connect('192.168.0.15', 8080)
         else:
             ftp.connect(self.ip, 8080)
+        ftp.connect('192.168.0.15', 8080)
         try:
             ftp.login(user=self.user, passwd=self.password, acct='')
             #dir = os.path.expanduser('~\\OneDrive\\Documentos\\')
