@@ -1,9 +1,16 @@
-import sys
-sys.path.append('/home/nask/Documentos/Repositórios/APS-Redes/')
+import sys, os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from Server import ServerFTP
+import Diretorios
 
 
 def start():
+
+    ip = None
+
+    if len(sys.argv) > 1:
+        ip = sys.argv[1]
+
     def createUser():
         user = input('Digite seu nome de usuário: ')
         return user
@@ -18,7 +25,7 @@ def start():
     }
 
     def call():
-        ServerFTP.ServerFTP(client, '/home/nask/Documentos/Transfer/').caller()
+        ServerFTP.ServerFTP(client, Diretorios.start()).caller(ip)
 
     call()
 
