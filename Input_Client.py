@@ -1,7 +1,13 @@
 from Client import ClientFTP
+import sys
 
 
 def start():
+    ip = None
+
+    if len(sys.argv) > 1:
+        ip = sys.argv[1]
+
     def createUser():
         user = input('Digite seu nome de usuário: ')
         return user
@@ -16,7 +22,7 @@ def start():
     }
 
     def call():
-        ClientFTP.ClientFTP(client).escolha()
+        ClientFTP.ClientFTP(client).menu(ip)
 
     call()
 

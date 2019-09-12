@@ -9,11 +9,15 @@ class ClientFTP(object):
     def __init__(self, client):
         self.user = client['User']
         self.password = client['Password']
+        self.ip = None
 
     def connect(self):
         ftp = FTP('')
+        if self.ip is None:
+            ftp.connect('192.168.0.15', 8080)
+        else:
+            ftp.connect(self.ip, 8080)
         ftp.connect('192.168.0.15', 8080)
-
         try:
             ftp.login(user=self.user, passwd=self.password, acct='')
             #dir = os.path.expanduser('~\\OneDrive\\Documentos\\')
@@ -23,31 +27,32 @@ class ClientFTP(object):
             sys.exit()
 
     def download(self, ftp):
-        caminho = input('Informe o arquivo ')
+        path = input('Informe o arquivo ')
         try:
-            arquivo = open(caminho, 'wb')
-            ftp.retrbinary('RETR ' + caminho, arquivo.write, 1024)
-            arquivo.close()
+            arq = open(path, 'wb')
+            ftp.retrbinary('RETR ' + path, arq.write, 1024)
+            arq.close()
         except:
             print('Caminho inválido!\n')
-            self.escolha()
+            self.menu(self.ip)
 
     def upload(self, ftp):
-        caminho = input('Digite o caminho absoluto do arquivo: ')
-        arq = caminho.split('/')[-1]
+        path = input('Informe o caminho do arquivo: ')
+        nameFile = path.split('/')[-1]
         try:
-         shutil.copy(caminho, '/home/nask/Documentos/Repositórios/APS-Redes/')
-         arquivo = open(arq, 'rb')
-         ftp.storbinary('STOR ' + arq, arquivo)
-         shutil.move('/home/nask/Documentos/Repositórios/APS-Redes/' + arq, caminho)
+         shutil.copy(path, '/home/nask/Documentos/Repositórios/APS-Redes/')
+         archive = open(nameFile, 'rb')
+         ftp.storbinary('STOR ' + nameFile, archive)
+         shutil.move('/home/nask/Documentos/Repositórios/APS-Redes/' + nameFile, path)
         except:
            print('Caminho inválido!\n')
-           self.escolha()
+           self.menu(self.ip)
 
     def listar(self, ftp):
         ftp.retrlines('LIST')
 
-    def escolha(self):
+    def menu(self, ip):
+        self.ip = ip
         ftp = self.connect()
 
         escolha = ''
@@ -62,3 +67,5 @@ class ClientFTP(object):
             self.upload(ftp)
        elif escolha == '3':
             self.listar(ftp)
+       elif escolha == '!EXIT':
+           sys.exit()
