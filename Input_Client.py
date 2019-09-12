@@ -1,9 +1,3 @@
-import sys
-import platform
-if platform.system() == 'Linux':
-    sys.path.append('/home/nask/Documentos/Repositórios/APS-Redes/')
-elif platform.system() == 'Windows':
-    sys.path.append('C:\\Users\\rapha\\Onedrive\\Documentos\\Repositórios\\')
 from Client import ClientFTP
 
 
