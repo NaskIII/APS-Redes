@@ -21,7 +21,7 @@ def start():  # Metodo que recebe uma dict, usado para nomear as pastas
         elif so == 'Windows':
             dir = os.path.expanduser('~\\OneDrive\\Documentos\\')
             os.makedirs(dir + 'Transfer\\', exist_ok=True)
-            dir = os.path.expanduser('~\\OneDrive\\Documentos\Transfer\\')
+            dir = os.path.expanduser('~\\OneDrive\\Documentos\\Transfer\\')
             return dir
         else:
             print('Sistema operacional não suportado')
