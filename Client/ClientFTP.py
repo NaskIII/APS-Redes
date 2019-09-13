@@ -3,6 +3,7 @@ import sys
 import os.path
 import os
 import shutil
+import platform
 
 
 class ClientFTP(object):
@@ -38,11 +39,22 @@ class ClientFTP(object):
     def upload(self, ftp):
         path = input('Informe o caminho do arquivo: ')
         nameFile = path.split('/')[-1]
+
         try:
-         shutil.copy(path, '/home/nask/Documentos/Repositórios/APS-Redes/')
+         so = platform.system()
+         if so == 'Linux':
+            shutil.move(path, os.path.expanduser('~/Documentos/Repositórios/APS-Redes/'))
+         elif so == 'Windows':
+             shutil.move(path, os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\'))
+
          archive = open(nameFile, 'rb')
          ftp.storbinary('STOR ' + nameFile, archive)
-         shutil.move('/home/nask/Documentos/Repositórios/APS-Redes/' + nameFile, path)
+
+         if so == 'Linux':
+            shutil.move(os.path.expanduser('~/Documentos/Repositórios/APS-Redes/') + nameFile, path)
+         elif so == 'Windows':
+             shutil.move(os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\') + nameFile, path)
+
         except:
            print('Caminho inválido!\n')
            self.menu(self.ip)
