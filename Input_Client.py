@@ -7,7 +7,10 @@ def start():
 
     if len(sys.argv) > 1:
         ip = sys.argv[1]
-
+    else:
+        print('Passe como argumento um ip válido.')
+        sys.exit()
+        
     def createUser():
         user = input('Digite seu nome de usuário: ')
         return user
