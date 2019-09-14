@@ -21,12 +21,12 @@ class ServerFTP(object):
         return handler
     
     def server(self, handler):
-        if self.ip is None:
-            server = FTPServer(('192.168.0.15', 8080), handler)
-            server.serve_forever()
-        else:
+        try:
             server = FTPServer((self.ip, 8080), handler)
+            print('\nConexão bem sucedida!\n')
             server.serve_forever()
+        except:
+            print('Impossível estabelecer a conexão')
 
     def caller(self, ip):
         self.ip = ip

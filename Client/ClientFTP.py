@@ -14,16 +14,14 @@ class ClientFTP(object):
 
     def connect(self):
         ftp = FTP('')
-        if self.ip is None:
-            ftp.connect('192.168.0.15', 8080)
-        else:
-            ftp.connect(self.ip, 8080)
         try:
+            ftp.connect(self.ip, 8080)
+            print('\nConexão bem sucedida!\n')
             ftp.login(user=self.user, passwd=self.password, acct='')
-            #dir = os.path.expanduser('~\\OneDrive\\Documentos\\')
+            print('Credenciais verificadas!\n')
             return ftp
         except:
-            print('Usuário e/ou senha incorretos.\n')
+            print('\nVerifique o IP. Se estiver tudo correto, suas credênciais estão inválidas.\n')
             sys.exit()
 
     def download(self, ftp):
@@ -38,14 +36,17 @@ class ClientFTP(object):
 
     def upload(self, ftp):
         path = input('Informe o caminho do arquivo: ')
-        nameFile = path.split('/')[-1]
+        so = platform.system()
+        if so == 'Linux':
+           nameFile = path.split('/')[-1]
+        elif so == 'Windows':
+             nameFile = path.split('\\')[-1]
 
         try:
-         so = platform.system()
          if so == 'Linux':
             shutil.move(path, os.path.expanduser('~/Documentos/Repositórios/APS-Redes/'))
          elif so == 'Windows':
-             shutil.move(path, os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\'))
+            shutil.move(path, os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\'))
 
          archive = open(nameFile, 'rb')
          ftp.storbinary('STOR ' + nameFile, archive)
@@ -79,4 +80,5 @@ class ClientFTP(object):
        elif escolha == '3':
             self.listar(ftp)
        elif escolha == '!EXIT':
+           print('\nAté logo!')
            sys.exit()
