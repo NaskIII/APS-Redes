@@ -43,18 +43,19 @@ class ClientFTP(object):
              nameFile = path.split('\\')[-1]
 
         try:
-         if so == 'Linux':
-            shutil.move(path, os.path.expanduser('~/Documentos/Repositórios/APS-Redes/'))
-         elif so == 'Windows':
-            shutil.move(path, os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\'))
+
+        # if so == 'Linux':
+        #    shutil.move(path, os.path.expanduser('~/Documentos/Repositórios/APS-Redes/'))
+        # elif so == 'Windows':
+        #   shutil.move(path, os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\'))
 
          archive = open(nameFile, 'rb')
          ftp.storbinary('STOR ' + nameFile, archive)
 
-         if so == 'Linux':
-            shutil.move(os.path.expanduser('~/Documentos/Repositórios/APS-Redes/') + nameFile, path)
-         elif so == 'Windows':
-             shutil.move(os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\') + nameFile, path)
+         #if so == 'Linux':
+          #  shutil.move(os.path.expanduser('~/Documentos/Repositórios/APS-Redes/') + nameFile, path)
+         #elif so == 'Windows':
+           #  shutil.move(os.path.expanduser('~\\OneDrive\\Documentos\\Repositórios\\APS-Redes\\') + nameFile, path)
 
         except:
            print('Caminho inválido!\n')

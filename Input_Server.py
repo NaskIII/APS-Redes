@@ -6,6 +6,7 @@ import Diretorios
 
 def start():
 
+    os.system('clear')
     ip = None
 
     if len(sys.argv) > 1:
@@ -28,6 +29,7 @@ def start():
     }
 
     def call():
+        os.system('clear')
         ServerFTP.ServerFTP(client, Diretorios.start()).caller(ip)
 
     call()
