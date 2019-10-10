@@ -1,2 +1,2 @@
 # APS-Redes
-Uma aplicação que tranferirá arquivos entre computadores através da rede
+Uma aplicação que irá transferir arquivos entre computadores na rede
