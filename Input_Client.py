@@ -1,8 +1,17 @@
 from Client import ClientFTP
 import sys
+import platform
+import os
 
 
 def start():
+    so = platform.system()
+
+    if so == 'Linux':
+        os.system('clear')
+    elif so == 'Windows':
+        os.system('cls')
+
     ip = None
 
     if len(sys.argv) > 1:
@@ -25,6 +34,10 @@ def start():
     }
 
     def call():
+        if so == 'Linux':
+            os.system('clear')
+        elif so == 'Windows':
+            os.system('cls')
         ClientFTP.ClientFTP(client).menu(ip)
 
     call()
