@@ -8,7 +8,8 @@ class ServerFTP(object):
         self.user = client['User']
         self.password = client['Password']
         self.diretorio = diretorio
-        self.ip = None
+
+    ip = None
 
     def login(self):
         login = DummyAuthorizer()
@@ -21,15 +22,17 @@ class ServerFTP(object):
         return handler
     
     def server(self, handler):
+        global ip
         try:
-            server = FTPServer((self.ip, 8080), handler)
+            server = FTPServer((ip, 8080), handler)
             print('\nConexão bem sucedida!\n')
             server.serve_forever()
         except:
             print('Impossível estabelecer a conexão')
 
-    def caller(self, ip):
-        self.ip = ip
+    def caller(self, IP):
+        global ip
+        ip = IP
         login = self.login()
         handler = self.handler(login)
         self.server(handler)
