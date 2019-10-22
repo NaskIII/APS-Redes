@@ -1,4 +1,6 @@
-import sys, os
+import sys
+import os
+import platform
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from Server import ServerFTP
 import Diretorios
@@ -6,7 +8,13 @@ import Diretorios
 
 def start():
 
-    os.system('clear')
+    so = platform.system()
+
+    if so == 'Linux':
+        os.system('clear')
+    elif so == 'Windows':
+        os.system('cls')
+
     ip = None
 
     if len(sys.argv) > 1:
@@ -29,7 +37,10 @@ def start():
     }
 
     def call():
-        os.system('clear')
+        if so == 'Linux':
+            os.system('clear')
+        elif so == 'Windows':
+            os.system('cls')
         ServerFTP.ServerFTP(client, Diretorios.start()).caller(ip)
 
     call()

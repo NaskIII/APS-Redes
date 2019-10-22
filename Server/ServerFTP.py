@@ -1,15 +1,20 @@
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
+from pyftpdlib import filesystems
+from threading import Thread
+import Diretorios
 
 
-class ServerFTP(object):
+class ServerFTP(Thread):
     def __init__(self, client, diretorio):
+        Thread.__init__(self)
         self.user = client['User']
         self.password = client['Password']
         self.diretorio = diretorio
 
     ip = None
+    check = False
 
     def login(self):
         login = DummyAuthorizer()
@@ -25,7 +30,6 @@ class ServerFTP(object):
         global ip
         try:
             server = FTPServer((ip, 8080), handler)
-            print('\nConexão bem sucedida!\n')
             server.serve_forever()
         except:
             print('Impossível estabelecer a conexão')

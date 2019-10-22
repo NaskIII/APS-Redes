@@ -4,6 +4,7 @@ from threading import Thread
 import time
 from Client import Upload
 import os
+import platform
 
 
 class ClientFTP(Thread):
@@ -21,9 +22,8 @@ class ClientFTP(Thread):
         ftp = FTP('')
         try:
             ftp.connect(ip, 8080)
-            print('\nConexão bem sucedida!\n')
             ftp.login(user=self.user, passwd=self.password, acct='')
-            print('Credenciais verificadas!\n')
+            print('\nConexão bem sucedida!\n')
             return ftp
         except:
             print('\nVerifique o IP. Se estiver tudo correto, suas credênciais estão inválidas.\n')
@@ -55,18 +55,6 @@ class ClientFTP(Thread):
             escolha = input('\n1 - Download \n2 - Upload \n3 - Listar\n \n>>> ')
             self.call(escolha, ftp)
 
-    def progress_bar(self, value, max, barsize):
-        chars = int(value * barsize / float(max))
-        numero = max - value
-        percent = int((numero * 100) / max)
-        percent = 100 - percent
-        sys.stdout.write("#" * chars)
-        sys.stdout.write(" " * (barsize - chars + 2))
-        if value >= max:
-            sys.stdout.write("Done. \n\n")
-        else:
-            sys.stdout.write("[%3i%%]\r" % percent)
-            sys.stdout.flush()
 
     def call(self, escolha, FTP):
         global ftp
@@ -78,16 +66,14 @@ class ClientFTP(Thread):
             thread1 = Upload.Upload(FTP)
             thread1.start()
             semaforo = 0
-            print()
 
-            while True:
+            while thread1.is_alive():
                 if thread1.finish is False:
                     if semaforo == 0:
-                        time.sleep(1)
+                        time.sleep(0.5)
                         semaforo = 1
                     else:
-                        path = os.path.expanduser('~/Documentos/Transfer/' + thread1.nameArq)
-                        size = os.path.getsize(path)
+                        size = ftp.size(thread1.nameArq)
                         self.progress_bar(size, thread1.tamanho, 40)
                         time.sleep(0.1)
                 elif thread1.finish is True:
@@ -97,3 +83,23 @@ class ClientFTP(Thread):
         elif escolha == '!EXIT':
             print('\nAté logo!')
             sys.exit()
+        elif escolha == 'clear':
+            so = platform.system()
+            if so == 'Linux':
+                os.system('clear')
+            elif so == 'Windows':
+                os.system('cls')
+
+    def progress_bar(self, value, max, barsize):
+        chars = int(value * barsize / float(max))
+        numero = max - value
+        percent = int((numero * 100) / max)
+        percent = 100 - percent
+        sys.stdout.write("#" * chars)
+        sys.stdout.write(" " * (barsize - chars + 2))
+        if value >= max:
+            sys.stdout.write("Done. \n\n")
+            print()
+        else:
+            sys.stdout.write("[%3i%%]\r" % percent)
+            sys.stdout.flush()
