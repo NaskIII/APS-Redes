@@ -4,7 +4,6 @@ import sys
 import os
 
 
-
 class Upload(Thread):
     def __init__(self, ftp):
         Thread.__init__(self)
@@ -21,7 +20,6 @@ class Upload(Thread):
     def run(self):
 
         path = self.size()
-
         so = platform.system()
         nomeArq = ''
 

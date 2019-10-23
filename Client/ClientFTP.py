@@ -3,6 +3,7 @@ import sys
 from threading import Thread
 import time
 from Client import Upload
+from Client import Download
 import os
 import platform
 
@@ -29,18 +30,6 @@ class ClientFTP(Thread):
             print('\nVerifique o IP. Se estiver tudo correto, suas credênciais estão inválidas.\n')
             sys.exit()
 
-    def run(self):
-
-        def download(ftp):
-            path = input('Informe o arquivo ')
-            try:
-                arq = open(path, 'wb')
-                ftp.retrbinary('RETR ' + path, arq.write, 1024)
-                arq.close()
-            except:
-                print('Caminho inválido!\n')
-                self.menu(ip)
-
     def listar(self, ftp):
         ftp.retrlines('LIST')
 
@@ -55,13 +44,24 @@ class ClientFTP(Thread):
             escolha = input('\n1 - Download \n2 - Upload \n3 - Listar\n \n>>> ')
             self.call(escolha, ftp)
 
-
     def call(self, escolha, FTP):
         global ftp
 
         ftp = FTP
         if escolha == '1':
-            self.download(FTP)
+            thread2 = Download.Download(FTP)
+            thread2.start()
+            semaforo = 0
+
+            while thread2.is_alive():
+                if thread2.finish is False:
+                    if semaforo == 0:
+                        time.sleep(0.5)
+                        semaforo = 1
+                    else:
+                        size = os.path.getsize(os.path.expanduser('~/Documentos/Repositórios/APS-Redes/') + thread2.nameArq)
+                        self.progress_bar(size, ftp.size(thread2.nameArq), 40)
+                        time.sleep(0.1)
         elif escolha == '2':
             thread1 = Upload.Upload(FTP)
             thread1.start()
@@ -76,8 +76,6 @@ class ClientFTP(Thread):
                         size = ftp.size(thread1.nameArq)
                         self.progress_bar(size, thread1.tamanho, 40)
                         time.sleep(0.1)
-                elif thread1.finish is True:
-                    break
         elif escolha == '3':
             self.listar(FTP)
         elif escolha == '!EXIT':
