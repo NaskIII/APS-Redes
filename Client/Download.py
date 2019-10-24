@@ -1,18 +1,22 @@
 from threading import Thread
+import os
 
 
 class Download(Thread):
-    def __init__(self, ftp):
+    def __init__(self, ftp, cwd):
         Thread.__init__(self)
         self.ftp = ftp
         self.finish = None
         self.nameArq = ''
+        self.cwd = cwd
 
     def run(self):
 
         path = input('Informe o arquivo: ')
         print()
         self.nameArq = path
+        arq = None
+
         try:
             arq = open(path, 'wb')
             self.finish = False
@@ -20,4 +24,6 @@ class Download(Thread):
             self.finish = True
             arq.close()
         except:
-            print('Caminho inválido!\n')
+            arq.close()
+            os.remove(self.cwd + '/'+ path)
+            print('Arquivo não encontrado!\n')

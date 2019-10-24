@@ -1,14 +1,10 @@
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-from pyftpdlib import filesystems
-from threading import Thread
-import Diretorios
 
 
-class ServerFTP(Thread):
+class ServerFTP(object):
     def __init__(self, client, diretorio):
-        Thread.__init__(self)
         self.user = client['User']
         self.password = client['Password']
         self.diretorio = diretorio
@@ -18,7 +14,7 @@ class ServerFTP(Thread):
 
     def login(self):
         login = DummyAuthorizer()
-        login.add_user(self.user, self.password, self.diretorio,perm='elradfmw', msg_login='Login Succefull', msg_quit='Goodbye')
+        login.add_user(self.user, self.password, self.diretorio, perm='elradfmwM', msg_login='Login Succefull', msg_quit='Goodbye')
         return login
     
     def handler(self, login):

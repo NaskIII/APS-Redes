@@ -14,12 +14,19 @@ class Upload(Thread):
 
     def size(self):
         path = input('Informe o caminho do arquivo: ')
-        self.tamanho = os.path.getsize(path)
-        return path
+        try:
+            self.tamanho = os.path.getsize(path)
+            return path
+        except:
+            print('Arquivo inexistente')
+            return -1
 
     def run(self):
 
         path = self.size()
+        if path == -1:
+            return
+
         so = platform.system()
         nomeArq = ''
 
@@ -42,4 +49,3 @@ class Upload(Thread):
             self.finish = True
         except:
             print('Caminho inválido!\n')
-            return
