@@ -11,34 +11,39 @@ class Upload(Thread):
         self.tamanho = 0
         self.nameArq = ''
         self.finish = None
+        self.path = ''
 
     def size(self):
         path = input('Informe o caminho do arquivo: ')
-        try:
-            self.tamanho = os.path.getsize(path)
-            return path
-        except:
-            print('Arquivo inexistente')
+        if path == '!exit':
             return -1
+        else:
+            try:
+                self.tamanho = os.path.getsize(path)
+                return path
+            except:
+                print('Arquivo inexistente')
+                return -1
 
     def run(self):
 
         path = self.size()
         if path == -1:
             return
-
-        so = platform.system()
-        nomeArq = ''
-
-        if so == 'Linux':
-            nomeArq = path.split('/')
-            nomeArq = nomeArq[-1]
-        elif so == 'Windows':
-            nomeArq = path.split('\\')
-            nomeArq = nomeArq[-1]
         else:
-            print('Sistema Operacional não suportado!')
-            sys.exit()
+            self.path = path
+            so = platform.system()
+            nomeArq = ''
+
+            if so == 'Linux':
+                nomeArq = path.split('/')
+                nomeArq = nomeArq[-1]
+            elif so == 'Windows':
+                nomeArq = path.split('\\')
+                nomeArq = nomeArq[-1]
+            else:
+                print('Sistema Operacional não suportado!')
+                sys.exit()
 
         self.nameArq = nomeArq
 
