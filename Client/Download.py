@@ -13,6 +13,8 @@ class Download(Thread):
     def run(self):
 
         path = input('Informe o arquivo: ')
+        if path == '!exit':
+            return
         print()
         self.nameArq = path
         arq = None

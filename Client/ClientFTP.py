@@ -1,4 +1,5 @@
 from ftplib import FTP
+import ftplib
 import sys
 from threading import Thread
 import time
@@ -64,32 +65,42 @@ class ClientFTP(Thread):
 
         thread2 = Download.Download(FTP, self.path)
         thread2.start()
-        semaforo = 0
 
         while thread2.is_alive():
             if thread2.finish is False:
-                if semaforo == 0:
-                    time.sleep(0.5)
-                    semaforo = 1
-                else:
-                    size = os.path.getsize(os.path.expanduser(self.path + '/') + thread2.nameArq)
-                    self.progress_bar(size, ftp.size(thread2.nameArq), 40)
-                    time.sleep(0.1)
+                try:
+                    with open(thread2.nameArq, 'r') as f:
+                        size = os.path.getsize(os.path.expanduser(self.path + '/') + thread2.nameArq)
+                        if size is not None:
+                            tamanho = ftp.size(thread2.nameArq)
+                            if tamanho is not None:
+                                self.progress_bar(size, tamanho, 40)
+                                time.sleep(0.1)
+                        else:
+                            print('Loading...\r')
+                except IOError:
+                    print('Loading...\r')
+                except ftplib.error_perm as err:
+                    pass
+
+        if thread2.finish is True:
+            self.progress_bar(100, 100, 40)
 
     def upload(self, FTP):
         thread1 = Upload.Upload(FTP)
         thread1.start()
-        semaforo = 0
 
         while thread1.is_alive():
             if thread1.finish is False:
-                if semaforo == 0:
-                    time.sleep(0.5)
-                    semaforo = 1
-                else:
-                    size = ftp.size(thread1.nameArq)
+                time.sleep(0.1)
+                size = ftp.size(thread1.nameArq)
+                if size is not None:
                     self.progress_bar(size, thread1.tamanho, 40)
                     time.sleep(0.1)
+                else:
+                    print('Loading...\r')
+        # else:
+            # self.progress_bar(100, 100, 40)
 
     def clear(self):
         so = platform.system()
@@ -107,7 +118,7 @@ class ClientFTP(Thread):
             print('Diretório inexistente')
 
     def cwd(self):
-        print('\nO diretório atual é: !E%s' % os.getcwd())
+        print('\nO diretório atual é: %s' % os.getcwd())
 
     def exit(self):
         print('\nAté logo!')
